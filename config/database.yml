@@ -1,0 +1,35 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  host: localhost
+  port: 5432
+  username: postgres
+  password: postgres
+
+development:
+  <<: *default
+  database: csr_dev
+
+test:
+  <<: *default
+  database: csr_test
+
+production:
+  primary: &primary_production
+    <<: *default
+    database: csr_prod
+    username: csr
+    password: <%= ENV["COMMUNITY_SPACE_RESERVATION_DATABASE_PASSWORD"] %>
+  cache:
+    <<: *primary_production
+    database: csr_prod_cache
+    migrations_paths: db/cache_migrate
+  queue:
+    <<: *primary_production
+    database: csr_prod_queue
+    migrations_paths: db/queue_migrate
+  cable:
+    <<: *primary_production
+    database: csr_prod_cable
+    migrations_paths: db/cable_migrate
