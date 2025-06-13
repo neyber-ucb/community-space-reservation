@@ -19,3 +19,7 @@ module Application
     end
   end
 end
+
+# Define a top-level constant to satisfy Zeitwerk autoloading
+# This is necessary because Zeitwerk expects app/application/use_cases/spaces/list_spaces.rb to define ListSpaces
+ListSpaces = Application::UseCases::Spaces::ListSpaces

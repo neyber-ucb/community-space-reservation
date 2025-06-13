@@ -35,3 +35,7 @@ module Application
     end
   end
 end
+
+# Define a top-level constant to satisfy Zeitwerk autoloading
+# This is necessary because Zeitwerk expects app/application/use_cases/users/register_user.rb to define RegisterUser
+RegisterUser = Application::UseCases::Users::RegisterUser

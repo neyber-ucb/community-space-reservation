@@ -42,3 +42,7 @@ module Application
     end
   end
 end
+
+# Define a top-level constant to satisfy Zeitwerk autoloading
+# This is necessary because Zeitwerk expects app/application/use_cases/bookings/confirm_booking.rb to define ConfirmBooking
+ConfirmBooking = Application::UseCases::Bookings::ConfirmBooking
