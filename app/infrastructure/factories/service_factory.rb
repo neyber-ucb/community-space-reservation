@@ -16,7 +16,7 @@ module Infrastructure
         end
 
         def create_notification_service
-          Infrastructure::Services::EmailNotificationService.new(
+          Domain::Services::EmailNotificationService.new(
             notification_repository
           )
         end
