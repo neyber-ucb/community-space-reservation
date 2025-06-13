@@ -51,3 +51,7 @@ module Interfaces
     end
   end
 end
+
+# Define a top-level constant to satisfy Zeitwerk autoloading
+# This is necessary because Zeitwerk expects app/interfaces/controllers/api/v1/users_controller.rb to define UsersController
+UsersController = Interfaces::Controllers::Api::V1::UsersController

@@ -106,3 +106,7 @@ module Interfaces
     end
   end
 end
+
+# Define a top-level constant to satisfy Zeitwerk autoloading
+# This is necessary because Zeitwerk expects app/interfaces/controllers/api/v1/spaces_controller.rb to define SpacesController
+SpacesController = Interfaces::Controllers::Api::V1::SpacesController

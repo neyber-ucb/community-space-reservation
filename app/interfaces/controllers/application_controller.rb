@@ -25,3 +25,7 @@ module Interfaces
     end
   end
 end
+
+# Define a top-level constant to satisfy Zeitwerk autoloading
+# This is necessary because Zeitwerk expects app/interfaces/controllers/application_controller.rb to define ApplicationController
+ApplicationController = Interfaces::Controllers::ApplicationController
