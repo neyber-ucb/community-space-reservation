@@ -35,3 +35,7 @@ module Domain
     end
   end
 end
+
+# Define a top-level constant to satisfy Zeitwerk autoloading
+# This is necessary because Zeitwerk expects app/domain/entities/booking.rb to define Booking
+Booking = Domain::Entities::Booking
