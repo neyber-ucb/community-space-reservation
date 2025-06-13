@@ -130,3 +130,7 @@ module Infrastructure
     end
   end
 end
+
+# Define a top-level constant to satisfy Zeitwerk autoloading
+# This is necessary because Zeitwerk expects app/infrastructure/repositories/active_record_space_repository.rb to define ActiveRecordSpaceRepository
+ActiveRecordSpaceRepository = Infrastructure::Repositories::ActiveRecordSpaceRepository
