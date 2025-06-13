@@ -1,30 +1,8 @@
-class ApplicationController < ActionController::API
-  include JsonWebToken
+# This is a delegation controller that points to the actual implementation
+# in the hexagonal architecture.
+# We need this file because Rails expects controllers in app/controllers
+# but we want to keep our hexagonal architecture intact.
+require_relative '../interfaces/controllers/application_controller'
 
-  before_action :authenticate_request
-
-  private
-
-  def authenticate_request
-    header = request.headers["Authorization"]
-    header = header.split(" ").last if header
-
-    decoded = decode_token(header)
-    if decoded
-      @current_user_id = decoded[0]["user_id"]
-    else
-      render json: { error: "Invalid token" }, status: :unauthorized
-    end
-  end
-
-  def current_user
-    return @current_user if @current_user
-    return nil unless @current_user_id
-
-    @current_user = user_repository.find(@current_user_id)
-  end
-
-  def user_repository
-    @user_repository ||= Infrastructure::Repositories::ActiveRecordUserRepository.new
-  end
-end
+# The actual implementation is in Interfaces::Controllers::ApplicationController
+# We're not redefining ApplicationController here, just referencing it
