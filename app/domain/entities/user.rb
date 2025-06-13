@@ -10,13 +10,13 @@ module Domain
         @name = attributes[:name]
         @password = attributes[:password]
         @password_digest = attributes[:password_digest]
-        @role = attributes[:role] || 'user'
+        @role = attributes[:role] || "user"
         @created_at = attributes[:created_at]
         @updated_at = attributes[:updated_at]
       end
 
       def admin?
-        role == 'admin'
+        role == "admin"
       end
     end
   end

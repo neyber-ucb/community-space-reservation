@@ -8,13 +8,13 @@ module Domain
 
       def check_availability(space_id, start_time, end_time)
         space = @space_repository.find(space_id)
-        
+
         if space.nil?
           return { available: false, message: "Space not found" }
         end
-        
+
         overlapping_bookings = @booking_repository.find_overlapping(space_id, start_time, end_time)
-        
+
         if overlapping_bookings.empty?
           { available: true, message: "Space is available for the requested time" }
         else
@@ -24,14 +24,14 @@ module Domain
 
       def create_booking(attributes)
         availability = check_availability(attributes[:space_id], attributes[:start_time], attributes[:end_time])
-        
+
         unless availability[:available]
           return { success: false, message: availability[:message] }
         end
-        
+
         booking_attributes = attributes.merge(status: "pending")
         booking = @booking_repository.create(booking_attributes)
-        
+
         if booking
           { success: true, message: "Booking created successfully", booking: booking }
         else
@@ -42,12 +42,12 @@ module Domain
       def confirm_booking(booking)
         return { success: false, message: "Booking is already confirmed" } if booking.status == "confirmed"
         return { success: false, message: "Cannot confirm a cancelled booking" } if booking.status == "cancelled"
-        
+
         # Create a new booking object with updated status
         updated_booking_data = booking.dup
         updated_booking_data.status = "confirmed"
         updated_booking = @booking_repository.update(updated_booking_data)
-        
+
         if updated_booking
           { success: true, message: "Booking confirmed successfully", booking: updated_booking }
         else
@@ -57,12 +57,12 @@ module Domain
 
       def cancel_booking(booking)
         return { success: false, message: "Booking is already cancelled" } if booking.status == "cancelled"
-        
+
         # Create a new booking object with updated status
         updated_booking_data = booking.dup
         updated_booking_data.status = "cancelled"
         updated_booking = @booking_repository.update(updated_booking_data)
-        
+
         if updated_booking
           { success: true, message: "Booking cancelled successfully", booking: updated_booking }
         else

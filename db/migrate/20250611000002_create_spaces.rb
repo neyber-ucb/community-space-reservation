@@ -8,7 +8,7 @@ class CreateSpaces < ActiveRecord::Migration[8.0]
 
       t.timestamps
     end
-    
+
     add_index :spaces, :space_type
   end
 end

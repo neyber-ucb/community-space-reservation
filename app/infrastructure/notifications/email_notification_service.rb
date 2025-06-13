@@ -11,7 +11,7 @@ module Infrastructure
         Rails.logger.info "Sending email to #{user.email}"
         Rails.logger.info "Subject: #{subject}"
         Rails.logger.info "Content: #{content}"
-        
+
         # Mock successful email delivery
         true
       end
@@ -22,13 +22,13 @@ module Infrastructure
           Hello #{user.name},
 
           Your booking for #{space.name} has been confirmed.
-          
+
           Details:
           - Date: #{booking.start_time.strftime('%B %d, %Y')}
           - Time: #{booking.start_time.strftime('%I:%M %p')} to #{booking.end_time.strftime('%I:%M %p')}
           - Space: #{space.name}
           - Space Type: #{space.space_type}
-          
+
           Thank you for using our service!
         CONTENT
 
@@ -41,13 +41,13 @@ module Infrastructure
           Hello #{user.name},
 
           Your booking for #{space.name} has been cancelled.
-          
+
           Details:
           - Date: #{booking.start_time.strftime('%B %d, %Y')}
           - Time: #{booking.start_time.strftime('%I:%M %p')} to #{booking.end_time.strftime('%I:%M %p')}
           - Space: #{space.name}
           - Space Type: #{space.space_type}
-          
+
           If you did not request this cancellation, please contact us.
         CONTENT
 

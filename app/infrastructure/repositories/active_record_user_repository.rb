@@ -6,7 +6,7 @@ module Infrastructure
         result = ActiveRecord::Base.connection.execute(
           "SELECT * FROM users WHERE id = #{ActiveRecord::Base.connection.quote(id)} LIMIT 1"
         ).first
-        
+
         return nil unless result
         map_to_entity_from_hash(result)
       end
@@ -16,7 +16,7 @@ module Infrastructure
         result = ActiveRecord::Base.connection.execute(
           "SELECT * FROM users WHERE email = #{ActiveRecord::Base.connection.quote(email)} LIMIT 1"
         ).first
-        
+
         return nil unless result
         map_to_entity_from_hash(result)
       end
@@ -30,10 +30,10 @@ module Infrastructure
       def create(user)
         puts "Creating user in repository: #{user.inspect}"
         puts "Password in repository: #{user.password.inspect}"
-        
+
         # Generate password digest using BCrypt
         password_digest = user.password.present? ? BCrypt::Password.create(user.password) : nil
-        
+
         # Use direct SQL for insertion
         sql = <<-SQL
           INSERT INTO users (name, email, password_digest, role, created_at, updated_at)
@@ -47,7 +47,7 @@ module Infrastructure
           )
           RETURNING *
         SQL
-        
+
         begin
           result = ActiveRecord::Base.connection.execute(sql).first
           puts "User saved successfully: #{result.inspect}"
@@ -64,18 +64,18 @@ module Infrastructure
         set_clauses << "name = #{ActiveRecord::Base.connection.quote(user.name)}" if user.name
         set_clauses << "email = #{ActiveRecord::Base.connection.quote(user.email)}" if user.email
         set_clauses << "role = #{ActiveRecord::Base.connection.quote(user.role)}" if user.role
-        
+
         # Handle password update if provided
         if user.password.present?
           password_digest = BCrypt::Password.create(user.password)
           set_clauses << "password_digest = #{ActiveRecord::Base.connection.quote(password_digest)}"
         end
-        
+
         set_clauses << "updated_at = NOW()"
-        
+
         # Return early if nothing to update
         return nil if set_clauses.empty?
-        
+
         # Execute the update
         sql = <<-SQL
           UPDATE users
@@ -83,7 +83,7 @@ module Infrastructure
           WHERE id = #{ActiveRecord::Base.connection.quote(user.id)}
           RETURNING *
         SQL
-        
+
         begin
           result = ActiveRecord::Base.connection.execute(sql).first
           return nil unless result
@@ -97,7 +97,7 @@ module Infrastructure
       def delete(id)
         # Use direct SQL for deletion
         sql = "DELETE FROM users WHERE id = #{ActiveRecord::Base.connection.quote(id)}"
-        
+
         begin
           ActiveRecord::Base.connection.execute(sql)
           true
@@ -120,7 +120,7 @@ module Infrastructure
           updated_at: user_hash["updated_at"]
         )
       end
-      
+
       # Keep the original method for backward compatibility
       def map_to_entity(user_record)
         ::Domain::Entities::User.new(

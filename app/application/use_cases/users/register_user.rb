@@ -19,12 +19,12 @@ module Application
             name: name,
             email: email,
             password_digest: password_digest,
-            role: 'user'
+            role: "user"
           )
 
           # Save user
           result = @user_repository.create(user)
-          
+
           if result
             { success: true, user: result, message: "User registered successfully" }
           else

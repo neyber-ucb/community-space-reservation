@@ -21,8 +21,8 @@ module Application
               role: user.role,
               exp: (Time.now + 24 * 3600).to_i # 24 hours expiration
             }
-            token = JWT.encode(payload, ENV['JWT_SECRET'] || 'default_secret_key', 'HS256')
-            
+            token = JWT.encode(payload, ENV["JWT_SECRET"] || "default_secret_key", "HS256")
+
             { success: true, user: user, token: token, message: "Authentication successful" }
           else
             { success: false, message: "Invalid email or password" }

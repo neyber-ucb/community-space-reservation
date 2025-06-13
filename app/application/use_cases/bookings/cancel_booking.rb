@@ -17,14 +17,14 @@ module Application
 
           # Cancel the booking
           result = @booking_service.cancel_booking(booking)
-          
+
           if result[:success]
             # Send notification to user
             user = @user_repository.find(booking.user_id)
             if user
               notification_content = "Your booking (ID: #{booking_id}) has been cancelled."
-              @notification_service.create_notification(booking.user_id, notification_content, 'system')
-              
+              @notification_service.create_notification(booking.user_id, notification_content, "system")
+
               # Send email notification if service is available
               if @email_notification_service && @email_notification_service.respond_to?(:send_email)
                 @email_notification_service.send_email(
@@ -35,7 +35,7 @@ module Application
               end
             end
           end
-          
+
           result
         end
       end

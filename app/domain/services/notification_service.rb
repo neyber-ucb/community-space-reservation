@@ -14,7 +14,7 @@ module Domain
         )
 
         result = @notification_repository.create(notification)
-        
+
         if result
           { success: true, notification: result, message: "Notification created successfully" }
         else
@@ -27,7 +27,7 @@ module Domain
         return { success: false, message: "Notification not found" } unless notification
 
         result = @notification_repository.mark_as_read(notification_id)
-        
+
         if result
           { success: true, notification: result, message: "Notification marked as read" }
         else

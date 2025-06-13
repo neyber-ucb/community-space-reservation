@@ -17,14 +17,14 @@ module Application
             start_time: start_time,
             end_time: end_time
           )
-          
+
           if result[:success]
             # Send notification to user
             user = @user_repository.find(user_id)
             if user
               notification_content = "Your booking for space #{space_id} from #{start_time} to #{end_time} has been created and is pending confirmation."
-              @notification_service.create_notification(user_id, notification_content, 'system')
-              
+              @notification_service.create_notification(user_id, notification_content, "system")
+
               # Send email notification if service is available
               if @email_notification_service && @email_notification_service.respond_to?(:send_email)
                 @email_notification_service.send_email(
@@ -35,7 +35,7 @@ module Application
               end
             end
           end
-          
+
           result
         end
       end

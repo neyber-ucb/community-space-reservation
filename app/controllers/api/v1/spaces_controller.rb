@@ -2,12 +2,12 @@ module Api
   module V1
     class SpacesController < ApplicationController
       # Explicitly require the necessary files
-      require_relative '../../../domain'
-      require_relative '../../../domain/entities'
-      require_relative '../../../domain/entities/space'
-      
-      before_action :set_space, only: [:show, :update, :destroy]
-      
+      require_relative "../../../domain"
+      require_relative "../../../domain/entities"
+      require_relative "../../../domain/entities/space"
+
+      before_action :set_space, only: [ :show, :update, :destroy ]
+
       # GET /api/v1/spaces
       def index
         # Use direct SQL instead of repository
@@ -15,7 +15,7 @@ module Api
         spaces = results.map { |result| map_to_space_entity(result) }
         render json: spaces.map { |space| serialize_space(space) }
       end
-      
+
       # GET /api/v1/spaces/categories
       def categories
         # Get distinct categories from the database
@@ -23,12 +23,12 @@ module Api
         categories = results.map { |result| result["category"] }.compact
         render json: { categories: categories }
       end
-      
+
       # GET /api/v1/spaces/:id
       def show
         render json: serialize_space(@space)
       end
-      
+
       # POST /api/v1/spaces
       def create
         # Extract parameters, prioritizing root level parameters
@@ -38,7 +38,7 @@ module Api
         space_params[:capacity] = params[:capacity] if params[:capacity].present?
         # Handle both category and space_type parameters
         space_params[:category] = params[:category] || params[:space_type] if params[:category].present? || params[:space_type].present?
-        
+
         # If any parameters are missing, try to get them from the nested space hash
         if params[:space].present?
           space_params[:name] ||= params[:space][:name]
@@ -47,9 +47,9 @@ module Api
           # Handle both category and space_type parameters in the nested hash
           space_params[:category] ||= params[:space][:category] || params[:space][:space_type]
         end
-        
+
         Rails.logger.debug "Space params after processing: #{space_params.inspect}"
-        
+
         # Use direct SQL for insertion
         sql = <<-SQL
           INSERT INTO spaces (
@@ -64,7 +64,7 @@ module Api
           )
           RETURNING *
         SQL
-        
+
         begin
           result = ActiveRecord::Base.connection.execute(sql).first
           space = map_to_space_entity(result)
@@ -73,7 +73,7 @@ module Api
           render json: { error: e.message }, status: :unprocessable_entity
         end
       end
-      
+
       # PUT /api/v1/spaces/:id
       def update
         # Extract parameters, prioritizing root level parameters
@@ -83,7 +83,7 @@ module Api
         space_params[:capacity] = params[:capacity] if params[:capacity].present?
         # Handle both category and space_type parameters
         space_params[:category] = params[:category] || params[:space_type] if params[:category].present? || params[:space_type].present?
-        
+
         # If any parameters are missing, try to get them from the nested space hash
         if params[:space].present?
           space_params[:name] ||= params[:space][:name]
@@ -92,9 +92,9 @@ module Api
           # Handle both category and space_type parameters in the nested hash
           space_params[:category] ||= params[:space][:category] || params[:space][:space_type]
         end
-        
+
         Rails.logger.debug "Space update params after processing: #{space_params.inspect}"
-        
+
         # Start building the SQL update statement
         set_clauses = []
         set_clauses << "name = #{ActiveRecord::Base.connection.quote(space_params[:name])}" if space_params[:name].present?
@@ -102,13 +102,13 @@ module Api
         set_clauses << "capacity = #{ActiveRecord::Base.connection.quote(space_params[:capacity])}" if space_params[:capacity].present?
         set_clauses << "category = #{ActiveRecord::Base.connection.quote(space_params[:category])}" if space_params[:category].present?
         set_clauses << "updated_at = NOW()"
-        
+
         # Return early if nothing to update
         if set_clauses.empty?
           render json: { error: "No attributes to update" }, status: :unprocessable_entity
           return
         end
-        
+
         # Execute the update
         sql = <<-SQL
           UPDATE spaces
@@ -116,7 +116,7 @@ module Api
           WHERE id = #{ActiveRecord::Base.connection.quote(params[:id])}
           RETURNING *
         SQL
-        
+
         begin
           result = ActiveRecord::Base.connection.execute(sql).first
           if result
@@ -129,12 +129,12 @@ module Api
           render json: { error: e.message }, status: :unprocessable_entity
         end
       end
-      
+
       # DELETE /api/v1/spaces/:id
       def destroy
         # Use direct SQL for deletion
         sql = "DELETE FROM spaces WHERE id = #{ActiveRecord::Base.connection.quote(params[:id])}"
-        
+
         begin
           ActiveRecord::Base.connection.execute(sql)
           head :no_content
@@ -142,23 +142,23 @@ module Api
           render json: { error: e.message }, status: :unprocessable_entity
         end
       end
-      
+
       private
-      
+
       def set_space
         # Use direct SQL to find the space
         result = ActiveRecord::Base.connection.execute(
           "SELECT * FROM spaces WHERE id = #{ActiveRecord::Base.connection.quote(params[:id])} LIMIT 1"
         ).first
-        
+
         unless result
           render json: { error: "Space not found" }, status: :not_found
           return
         end
-        
+
         @space = map_to_space_entity(result)
       end
-      
+
       def map_to_space_entity(space_hash)
         # Use the namespaced class with the double colon prefix to ensure proper resolution
         ::Domain::Entities::Space.new(
@@ -171,7 +171,7 @@ module Api
           updated_at: space_hash["updated_at"]
         )
       end
-      
+
       def serialize_space(space)
         {
           id: space.id,

@@ -8,7 +8,7 @@ class CreateNotifications < ActiveRecord::Migration[8.0]
 
       t.timestamps
     end
-    
+
     add_index :notifications, :notification_type
     add_index :notifications, :read
   end

@@ -3,8 +3,8 @@ module Domain
     class Booking
       attr_accessor :id, :user_id, :space_id, :start_time, :end_time, :status,
                     :created_at, :updated_at
-      
-      def initialize(id:, user_id:, space_id:, start_time:, end_time:, status:, 
+
+      def initialize(id:, user_id:, space_id:, start_time:, end_time:, status:,
                      created_at:, updated_at:)
         @id = id
         @user_id = user_id
@@ -22,15 +22,15 @@ module Domain
       end
 
       def pending?
-        status == 'pending'
+        status == "pending"
       end
 
       def confirmed?
-        status == 'confirmed'
+        status == "confirmed"
       end
 
       def cancelled?
-        status == 'cancelled'
+        status == "cancelled"
       end
     end
   end

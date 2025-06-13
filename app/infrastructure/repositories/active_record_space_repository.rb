@@ -6,17 +6,17 @@ module Infrastructure
         result = ActiveRecord::Base.connection.execute(
           "SELECT * FROM spaces WHERE id = #{ActiveRecord::Base.connection.quote(id)} LIMIT 1"
         ).first
-        
+
         return nil unless result
         map_to_entity_from_hash(result)
       end
-      
+
       def all
         # Use direct SQL instead of Space model
         results = ActiveRecord::Base.connection.execute("SELECT * FROM spaces")
         results.map { |result| map_to_entity_from_hash(result) }
       end
-      
+
       def find_by_category(category)
         # Use direct SQL instead of Space model
         results = ActiveRecord::Base.connection.execute(
@@ -24,7 +24,7 @@ module Infrastructure
         )
         results.map { |result| map_to_entity_from_hash(result) }
       end
-      
+
       def create(space)
         # Use direct SQL for insertion
         sql = <<-SQL
@@ -42,7 +42,7 @@ module Infrastructure
           )
           RETURNING *
         SQL
-        
+
         begin
           result = ActiveRecord::Base.connection.execute(sql).first
           map_to_entity_from_hash(result)
@@ -51,7 +51,7 @@ module Infrastructure
           nil
         end
       end
-      
+
       def update(space)
         # Start building the SQL update statement
         set_clauses = []
@@ -62,10 +62,10 @@ module Infrastructure
         set_clauses << "location = #{ActiveRecord::Base.connection.quote(space.location)}" if space.location
         set_clauses << "price_per_hour = #{ActiveRecord::Base.connection.quote(space.price_per_hour)}" if space.price_per_hour
         set_clauses << "updated_at = NOW()"
-        
+
         # Return early if nothing to update
         return false if set_clauses.empty?
-        
+
         # Execute the update
         sql = <<-SQL
           UPDATE spaces
@@ -73,7 +73,7 @@ module Infrastructure
           WHERE id = #{ActiveRecord::Base.connection.quote(space.id)}
           RETURNING *
         SQL
-        
+
         begin
           result = ActiveRecord::Base.connection.execute(sql).first
           return false unless result
@@ -83,11 +83,11 @@ module Infrastructure
           false
         end
       end
-      
+
       def delete(id)
         # Use direct SQL for deletion
         sql = "DELETE FROM spaces WHERE id = #{ActiveRecord::Base.connection.quote(id)}"
-        
+
         begin
           ActiveRecord::Base.connection.execute(sql)
           true
@@ -96,9 +96,9 @@ module Infrastructure
           false
         end
       end
-      
+
       private
-      
+
       def map_to_entity_from_hash(space_hash)
         ::Domain::Entities::Space.new(
           id: space_hash["id"],
@@ -112,7 +112,7 @@ module Infrastructure
           updated_at: space_hash["updated_at"]
         )
       end
-      
+
       # Keep the original method for backward compatibility
       def map_to_entity(space_record)
         ::Domain::Entities::Space.new(

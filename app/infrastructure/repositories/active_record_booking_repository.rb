@@ -4,7 +4,7 @@ module Infrastructure
       def find(id)
         booking_record = Booking.find_by(id: id)
         return nil unless booking_record
-        
+
         map_to_entity(booking_record)
       end
 
@@ -21,15 +21,15 @@ module Infrastructure
       end
 
       def find_by_date_range(start_date, end_date)
-        Booking.where('start_time >= ? AND end_time <= ?', start_date, end_date)
+        Booking.where("start_time >= ? AND end_time <= ?", start_date, end_date)
                .map { |booking_record| map_to_entity(booking_record) }
       end
 
       def find_overlapping(space_id, start_time, end_time)
         Booking.where(space_id: space_id)
-               .where('(start_time <= ? AND end_time >= ?) OR (start_time <= ? AND end_time >= ?) OR (start_time >= ? AND end_time <= ?)', 
+               .where("(start_time <= ? AND end_time >= ?) OR (start_time <= ? AND end_time >= ?) OR (start_time >= ? AND end_time <= ?)",
                       start_time, start_time, end_time, end_time, start_time, end_time)
-               .where.not(status: 'cancelled')
+               .where.not(status: "cancelled")
                .map { |booking_record| map_to_entity(booking_record) }
       end
 
@@ -41,31 +41,31 @@ module Infrastructure
           end_time: booking.end_time,
           status: booking.status
         )
-        
+
         return nil unless booking_record.save
-        
+
         map_to_entity(booking_record)
       end
 
       def update(booking)
         booking_record = Booking.find_by(id: booking.id)
         return nil unless booking_record
-        
+
         booking_record.user_id = booking.user_id if booking.user_id
         booking_record.space_id = booking.space_id if booking.space_id
         booking_record.start_time = booking.start_time if booking.start_time
         booking_record.end_time = booking.end_time if booking.end_time
         booking_record.status = booking.status if booking.status
-        
+
         return nil unless booking_record.save
-        
+
         map_to_entity(booking_record)
       end
 
       def delete(id)
         booking_record = Booking.find_by(id: id)
         return false unless booking_record
-        
+
         booking_record.destroy
         true
       end

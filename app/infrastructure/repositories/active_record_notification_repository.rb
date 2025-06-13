@@ -4,7 +4,7 @@ module Infrastructure
       def find(id)
         notification_record = Notification.find_by(id: id)
         return nil unless notification_record
-        
+
         map_to_entity(notification_record)
       end
 
@@ -27,39 +27,39 @@ module Infrastructure
           notification_type: notification.notification_type,
           read: notification.read
         )
-        
+
         return nil unless notification_record.save
-        
+
         map_to_entity(notification_record)
       end
 
       def update(notification)
         notification_record = Notification.find_by(id: notification.id)
         return nil unless notification_record
-        
+
         notification_record.content = notification.content if notification.content
         notification_record.notification_type = notification.notification_type if notification.notification_type
         notification_record.read = notification.read if !notification.read.nil?
-        
+
         return nil unless notification_record.save
-        
+
         map_to_entity(notification_record)
       end
 
       def mark_as_read(id)
         notification_record = Notification.find_by(id: id)
         return nil unless notification_record
-        
+
         notification_record.read = true
         return nil unless notification_record.save
-        
+
         map_to_entity(notification_record)
       end
 
       def delete(id)
         notification_record = Notification.find_by(id: id)
         return false unless notification_record
-        
+
         notification_record.destroy
         true
       end

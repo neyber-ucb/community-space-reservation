@@ -17,23 +17,23 @@ module CommunitySpaceReservation
     config.autoload_lib(ignore: %w[assets tasks])
 
     # Configure autoload paths for hexagonal architecture
-    config.autoload_paths += %W(
+    config.autoload_paths += %W[
       #{config.root}/app
       #{config.root}/app/domain
       #{config.root}/app/domain/entities
       #{config.root}/app/domain/repositories
       #{config.root}/app/infrastructure
       #{config.root}/app/infrastructure/repositories
-    )
+    ]
 
     # Also add these paths to eager load paths to ensure they're loaded in production
-    config.eager_load_paths += %W(
+    config.eager_load_paths += %W[
       #{config.root}/app/domain
       #{config.root}/app/domain/entities
       #{config.root}/app/domain/repositories
       #{config.root}/app/infrastructure
       #{config.root}/app/infrastructure/repositories
-    )
+    ]
 
     # Configuration for the application, engines, and railties goes here.
     #
