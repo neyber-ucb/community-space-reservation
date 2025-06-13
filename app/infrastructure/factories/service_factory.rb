@@ -67,3 +67,7 @@ module Infrastructure
     end
   end
 end
+
+# Define a top-level constant to satisfy Zeitwerk autoloading
+# This is necessary because Zeitwerk expects app/infrastructure/factories/service_factory.rb to define ServiceFactory
+ServiceFactory = Infrastructure::Factories::ServiceFactory
