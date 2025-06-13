@@ -160,8 +160,8 @@ module Api
       end
 
       def map_to_space_entity(space_hash)
-        # Use the namespaced class with the double colon prefix to ensure proper resolution
-        ::Domain::Entities::Space.new(
+        # Use the top-level alias to ensure proper resolution
+        ::Space.new(
           id: space_hash["id"],
           name: space_hash["name"],
           description: space_hash["description"],

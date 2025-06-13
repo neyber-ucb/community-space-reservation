@@ -4,5 +4,11 @@
 # but we want to keep our hexagonal architecture intact.
 require_relative "../../interfaces/controllers/api/v1"
 
+# Define the Api::V1 module to satisfy Zeitwerk autoloading
+module Api
+  module V1
+  end
+end
+
 # The actual implementation is in Interfaces::Controllers::Api::V1
-# We're not redefining V1 here, just referencing it
+# We're using the same name to maintain compatibility

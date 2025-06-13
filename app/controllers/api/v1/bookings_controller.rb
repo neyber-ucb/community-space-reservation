@@ -300,7 +300,7 @@ module Api
 
       def map_to_booking_entity(booking_hash)
         # Create a booking entity
-        booking = ::Domain::Entities::Booking.new(
+        booking = ::Booking.new(
           id: booking_hash["id"],
           user_id: booking_hash["user_id"],
           space_id: booking_hash["space_id"],
