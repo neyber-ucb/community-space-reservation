@@ -36,7 +36,7 @@ app/
 ### Prerrequisitos
 
 - Ruby 3.3+
-- PostgreSQL
+- PostgreSQL 17+
 - Rails 8.0.2+
 
 ### Configuración
@@ -50,22 +50,29 @@ app/
 
 La documentación de la API estará disponible en `/api/docs` cuando el servidor esté en funcionamiento.
 
-Cosas que podrías querer cubrir:
+### Endpoints Principales
 
-* Versión de Ruby
+#### Autenticación
+- `POST /api/v1/auth/login` - Iniciar sesión con email y contraseña
+- `POST /api/v1/users` - Registrar un nuevo usuario
 
-* Dependencias del sistema
+#### Usuarios
+- `GET /api/v1/users/me` - Obtener información del usuario actual
+- `PUT /api/v1/users/me` - Actualizar información del usuario actual
 
-* Configuración
+#### Espacios
+- `GET /api/v1/spaces` - Listar todos los espacios disponibles
+- `GET /api/v1/spaces?space_type=Parques` - Filtrar espacios por tipo
+- `GET /api/v1/spaces/:id` - Ver detalles de un espacio específico
+- `POST /api/v1/spaces` - Crear un nuevo espacio (requiere autenticación)
+- `PUT /api/v1/spaces/:id` - Actualizar un espacio existente
+- `DELETE /api/v1/spaces/:id` - Eliminar un espacio
 
-* Creación de base de datos
+#### Reservas
+- `GET /api/v1/bookings` - Listar todas las reservas del usuario actual
+- `GET /api/v1/bookings/:id` - Ver detalles de una reserva específica
+- `POST /api/v1/bookings` - Crear una nueva reserva
+- `PUT /api/v1/bookings/:id` - Actualizar una reserva existente
+- `DELETE /api/v1/bookings/:id` - Cancelar una reserva
 
-* Inicialización de base de datos
-
-* Cómo ejecutar el conjunto de pruebas
-
-* Servicios (colas de trabajo, servidores de caché, motores de búsqueda, etc.)
-
-* Instrucciones de despliegue
-
-* ...
+Para más detalles sobre los parámetros requeridos y las respuestas de cada endpoint, consulte la documentación interactiva en `/api/docs`.
