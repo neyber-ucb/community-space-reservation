@@ -1,6 +1,6 @@
 # This file defines the ApplicationController for the traditional Rails structure
 # while maintaining compatibility with our hexagonal architecture
-require 'jwt'
+require "jwt"
 
 # Define the ApplicationController class to satisfy Zeitwerk autoloading
 class ApplicationController < ActionController::API
