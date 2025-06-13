@@ -22,6 +22,11 @@ module Domain
         end
       end
 
+      def get_user_notifications(user_id)
+        notifications = @notification_repository.find_by_user(user_id)
+        { success: true, notifications: notifications }
+      end
+
       def mark_as_read(notification_id)
         notification = @notification_repository.find(notification_id)
         return { success: false, message: "Notification not found" } unless notification
@@ -42,3 +47,7 @@ module Domain
     end
   end
 end
+
+# Define a top-level constant to satisfy Zeitwerk autoloading
+# This is necessary because Zeitwerk expects app/domain/services/notification_service.rb to define NotificationService
+NotificationService = Domain::Services::NotificationService

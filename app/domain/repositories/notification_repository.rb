@@ -35,3 +35,7 @@ module Domain
     end
   end
 end
+
+# Define a top-level constant to satisfy Zeitwerk autoloading
+# This is necessary because Zeitwerk expects app/domain/repositories/notification_repository.rb to define NotificationRepository
+NotificationRepository = Domain::Repositories::NotificationRepository

@@ -39,3 +39,7 @@ module Domain
     end
   end
 end
+
+# Define a top-level constant to satisfy Zeitwerk autoloading
+# This is necessary because Zeitwerk expects app/domain/repositories/booking_repository.rb to define BookingRepository
+BookingRepository = Domain::Repositories::BookingRepository

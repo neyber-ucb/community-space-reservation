@@ -27,3 +27,7 @@ module Domain
     end
   end
 end
+
+# Define a top-level constant to satisfy Zeitwerk autoloading
+# This is necessary because Zeitwerk expects app/domain/repositories/user_repository.rb to define UserRepository
+UserRepository = Domain::Repositories::UserRepository
