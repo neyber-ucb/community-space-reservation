@@ -1,6 +1,11 @@
 module Api
   module V1
     class SpacesController < ApplicationController
+      # Explicitly require the necessary files
+      require_relative '../../../domain'
+      require_relative '../../../domain/entities'
+      require_relative '../../../domain/entities/space'
+      
       before_action :set_space, only: [:show, :update, :destroy]
       
       # GET /api/v1/spaces
@@ -155,6 +160,7 @@ module Api
       end
       
       def map_to_space_entity(space_hash)
+        # Use the namespaced class with the double colon prefix to ensure proper resolution
         ::Domain::Entities::Space.new(
           id: space_hash["id"],
           name: space_hash["name"],
