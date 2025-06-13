@@ -56,3 +56,7 @@ module Infrastructure
     end
   end
 end
+
+# Define a top-level constant to satisfy Zeitwerk autoloading
+# This is necessary because Zeitwerk expects app/infrastructure/notifications/email_notification_service.rb to define EmailNotificationService
+EmailNotificationService = Infrastructure::Notifications::EmailNotificationService
